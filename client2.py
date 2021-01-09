@@ -5,15 +5,15 @@ import sys
 
 HEADER_LENGTH = 10
 
-IP = "192.168.56.101"
+IP = "192.168.208.7"
 PORT = 8888
 
 def menuChoice(set):
-	if set == 'set a':
+	if set.lower() == 'set a':
 		price = 30
-	elif set == 'set b':
+	elif set.lower() == 'set b':
 		price = 35
-	elif set == 'set c':
+	elif set.lower() == 'set c':
 		price = 40
 	else:
 		return 0
@@ -23,7 +23,7 @@ while True:
 	history = open('history.txt','a')
 
 	my_username = input("Username: ")
-	if my_username == 'exit'
+	if my_username.lower() == 'exit':
 		sys.exit()
 
 	history.write(f'{my_username};')
@@ -51,8 +51,8 @@ while True:
 
 			client_socket.send(message_header + message)
 		elif message.lower() =='total':
-			print(f'Harga : {total_price}')
-			history.write(f'RM{total_price}\n')
+			print(f'Harga : RM {total_price}')
+			history.write(f'RM {total_price}\n')
 			history.close()
 			break
 		elif message.lower() =='exit':
