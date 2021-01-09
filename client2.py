@@ -5,8 +5,19 @@ import sys
 
 HEADER_LENGTH = 10
 
-IP = "192.168.230.5"
+IP = "192.168.56.101"
 PORT = 8888
+
+def menuChoice(set):
+	if set == 'A':
+		price = 30
+	elif set == 'B':
+		price = 35
+	elif set == 'C':
+		price = 40
+	else:
+		return 0
+	return price
 
 while True:
 	my_username = input("Username: ")
@@ -22,23 +33,31 @@ while True:
 	username = my_username.encode('utf-8')
 	username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
 	client_socket.send(username_header + username)
-
+	total_price = 0
 	while True:
 
 		message = input(f'{my_username} > ')
 		# If message is not empty - send it
-		if message:
+		if message.lower() == 'set a' or message.lower()=='set b' or message.lower()=='set c':
+			total_price += menuChoice(message)
 
 			message = message.encode('utf-8')
 			message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
 			if message == b'exit':
-				print('HARGA')
+				print(f'HARGA : {total_price}')
 				break
 			if message == b'end':
 				sys.exit()
 
 			client_socket.send(message_header + message)
-
+		elif message.lower() =='total':
+			print(f'Harga : {total_price}')
+			break
+		elif message.lower() =='exit':
+			sys.exit()
+		else:
+			print('invalid')
+			continue
 		try:
 			while True:
 
