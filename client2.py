@@ -7,7 +7,7 @@ from colorama import Fore
 
 HEADER_LENGTH = 10
 
-IP = "192.168.208.7"
+IP = "192.168.230.5"
 PORT = 8888
 
 def menuChoice(set):
@@ -24,8 +24,10 @@ def menuChoice(set):
 while True:
 	history = open('history.txt','a')
 
-	my_username = input(Fore.YELLOW + "Username: ")
+	print(Fore.YELLOW)
+	my_username = input("Username: ")
 	if my_username.lower() == 'exit':
+		print(Fore.WHITE)
 		sys.exit()
 
 	history.write(f'{my_username};')
@@ -42,7 +44,7 @@ while True:
 	client_socket.send(username_header + username)
 	total_price = 0
 	while True:
-		message = input(f'{my_username} > ')
+		message = input(Fore.YELLOW + f'{my_username} > ')
 		# If message is not empty - send it
 		if message.lower() == 'set a' or message.lower()=='set b' or message.lower()=='set c':
 			history.write(f'{message};')
@@ -58,8 +60,9 @@ while True:
 			history.close()
 			break
 		elif message.lower() =='exit':
-			sys.exit()
 			history.close()
+			print(Fore.WHITE)
+			sys.exit()
 		else:
 			print(Fore.RED + 'invalid')
 			continue
