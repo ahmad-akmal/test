@@ -9,19 +9,24 @@ IP = "192.168.56.101"
 PORT = 8888
 
 def menuChoice(set):
-	if set == 'A':
+	if set == 'set a':
 		price = 30
-	elif set == 'B':
+	elif set == 'set b':
 		price = 35
-	elif set == 'C':
+	elif set == 'set c':
 		price = 40
 	else:
 		return 0
 	return price
 
 while True:
-	my_username = input("Username: ")
+	history = open('history.txt','a')
 
+	my_username = input("Username: ")
+	if my_username == 'exit'
+		sys.exit()
+
+	history.write(f'{my_username};')
 	#create socket
 	client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -35,26 +40,24 @@ while True:
 	client_socket.send(username_header + username)
 	total_price = 0
 	while True:
-
 		message = input(f'{my_username} > ')
 		# If message is not empty - send it
 		if message.lower() == 'set a' or message.lower()=='set b' or message.lower()=='set c':
+			history.write(f'{message};')
 			total_price += menuChoice(message)
 
 			message = message.encode('utf-8')
 			message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
-			if message == b'exit':
-				print(f'HARGA : {total_price}')
-				break
-			if message == b'end':
-				sys.exit()
 
 			client_socket.send(message_header + message)
 		elif message.lower() =='total':
 			print(f'Harga : {total_price}')
+			history.write(f'RM{total_price}\n')
+			history.close()
 			break
 		elif message.lower() =='exit':
 			sys.exit()
+			history.close()
 		else:
 			print('invalid')
 			continue
