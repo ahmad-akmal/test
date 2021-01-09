@@ -2,6 +2,8 @@ import socket
 import select
 import errno
 import sys
+import colorama
+from colorama import Fore
 
 HEADER_LENGTH = 10
 
@@ -22,7 +24,7 @@ def menuChoice(set):
 while True:
 	history = open('history.txt','a')
 
-	my_username = input("Username: ")
+	my_username = input(Fore.YELLOW + "Username: ")
 	if my_username.lower() == 'exit':
 		sys.exit()
 
@@ -51,7 +53,7 @@ while True:
 
 			client_socket.send(message_header + message)
 		elif message.lower() =='total':
-			print(f'Harga : RM {total_price}')
+			print(Fore.YELLOW + f'Harga : RM {total_price}')
 			history.write(f'RM {total_price}\n')
 			history.close()
 			break
@@ -59,7 +61,7 @@ while True:
 			sys.exit()
 			history.close()
 		else:
-			print('invalid')
+			print(Fore.RED + 'invalid')
 			continue
 		try:
 			while True:
@@ -67,7 +69,7 @@ while True:
 				username_header = client_socket.recv(HEADER_LENGTH)
 
 				if not len(username_header):
-					print('Connection closed by the server')
+					print(Fore.RED + 'Connection closed by the server')
 					sys.exit()
 
 				username_length = int(username_header.decode('utf-8').strip())
@@ -78,7 +80,7 @@ while True:
 				message = client_socket.recv(message_length).decode('utf-8')
 
 				# Print message
-				print(f'{username} > {message}')
+				print(Fore.YELLOW + f'{username} > {message}')
 
 		except IOError as e:
 			if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
