@@ -6,6 +6,7 @@ HEADER_LENGTH = 10
 
 IP = "192.168.230.5"
 PORT = 8888
+
 my_username = input("Username: ")
 
 # Create a socket
@@ -29,13 +30,15 @@ while True:
 
 	# Wait for user to input a message
 	message = input(f'{my_username} > ')
-	#message = ""
 	# If message is not empty - send it
 	if message:
 
 		# Encode message to bytes, prepare header and convert to bytes, like for username above, then send
 		message = message.encode('utf-8')
 		message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
+		if message == b'exit':
+			print('HARGA')
+			continue
 		client_socket.send(message_header + message)
 
 	try:
