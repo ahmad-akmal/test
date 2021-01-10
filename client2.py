@@ -7,7 +7,7 @@ from colorama import Fore
 
 HEADER_LENGTH = 10
 
-IP = "192.168.230.5"
+IP = "192.168.56.101"
 PORT = 8888
 
 def menuChoice(set):
@@ -66,34 +66,3 @@ while True:
 		else:
 			print(Fore.RED + 'invalid')
 			continue
-		try:
-			while True:
-
-				username_header = client_socket.recv(HEADER_LENGTH)
-
-				if not len(username_header):
-					print(Fore.RED + 'Connection closed by the server')
-					sys.exit()
-
-				username_length = int(username_header.decode('utf-8').strip())
-				username = client_socket.recv(username_length).decode('utf-8')
-
-				message_header = client_socket.recv(HEADER_LENGTH)
-				message_length = int(message_header.decode('utf-8').strip())
-				message = client_socket.recv(message_length).decode('utf-8')
-
-				# Print message
-				print(Fore.YELLOW + f'{username} > {message}')
-
-		except IOError as e:
-			if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
-				print('Reading error: {}'.format(str(e)))
-				sys.exit()
-
-				# We just did not receive anything
-				continue
-
-		except Exception as e:
-			# Any other exception
-			print('Reading error: '.format(str(e)))
-			sys.exit()

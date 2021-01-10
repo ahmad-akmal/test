@@ -3,7 +3,7 @@ import select
 
 HEADER_LENGTH = 10
 
-IP = "192.168.208.7"
+IP = ''
 PORT = 8888
 
 #Create socket
@@ -18,7 +18,7 @@ sockets_list = [server_socket]
 #connected clients - socket as a key, user header and name as data
 clients = {}
 
-print(f'Listening for connections on {IP}:{PORT}...')
+print(f'Listening for connections...')
 
 #message receiving handler
 def receive_message(client_socket):
