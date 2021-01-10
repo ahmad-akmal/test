@@ -1,6 +1,7 @@
 import socket
 import select
 import errno
+import signal
 import sys
 import colorama
 from colorama import Fore
@@ -9,6 +10,9 @@ HEADER_LENGTH = 10
 
 IP = "192.168.56.101"
 PORT = 8888
+
+def signal_handler(sig,frame):
+	print("Please exit properly by typing 'exit' while in Username:")
 
 def menuChoice(set):
 	if set.lower() == 'set a':
@@ -22,10 +26,16 @@ def menuChoice(set):
 	return price
 
 while True:
+	#file open
 	history = open('history.txt','a')
+
+	#no ctrl-c allowed here
+	signal.signal(signal.SIGINT, signal_handler)
 
 	print(Fore.YELLOW)
 	my_username = input("Username: ")
+
+	#user exit program
 	if my_username.lower() == 'exit':
 		print(Fore.WHITE)
 		sys.exit()
@@ -36,7 +46,7 @@ while True:
 
 	client_socket.connect((IP, PORT))
 
-	#non-blocking
+	#set to non-blocking
 	client_socket.setblocking(False)
 
 	username = my_username.encode('utf-8')
@@ -45,6 +55,7 @@ while True:
 	total_price = 0
 	while True:
 		message = input(Fore.YELLOW + f'{my_username} > ')
+
 		# If message is not empty - send it
 		if message.lower() == 'set a' or message.lower()=='set b' or message.lower()=='set c':
 			history.write(f'{message};')
@@ -59,10 +70,6 @@ while True:
 			history.write(f'RM {total_price}\n')
 			history.close()
 			break
-		elif message.lower() =='exit':
-			history.close()
-			print(Fore.WHITE)
-			sys.exit()
 		else:
 			print(Fore.RED + 'invalid')
 			continue
