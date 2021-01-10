@@ -66,7 +66,7 @@ while True:
 
 			client_socket.send(message_header + message)
 		elif message.lower() =='total':
-			print(Fore.YELLOW + f'Harga : RM {total_price}')
+			print(Fore.YELLOW + f'TOTAL PRICE : RM {total_price}')
 			history.write(f'RM {total_price}\n')
 			history.close()
 			break
