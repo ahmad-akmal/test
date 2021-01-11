@@ -4,7 +4,7 @@ import sys
 
 HEADER_LENGTH = 10
 
-IP = '192.168.230.5'
+IP = ''
 PORT = 8888
 
 #Create socket
