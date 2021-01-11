@@ -1,0 +1,3 @@
+s;SET A;RM 30
+table 12;set a;set a;RM 60
+[Aexit;RM 0
