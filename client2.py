@@ -71,5 +71,5 @@ while True:
 			history.close()
 			break
 		else:
-			print(Fore.RED + 'invalid')
+			print(Fore.RED + 'INVALID')
 			continue
