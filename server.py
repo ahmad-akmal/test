@@ -21,8 +21,8 @@ clients = {}
 
 print(f'Listening for connections...')
 
-#message receiving handler
-def receive_message(client_socket):
+#receiving message from the clients
+def newMessage(client_socket):
 
 	try:
 		message_header = client_socket.recv(HEADER_LENGTH)
@@ -38,43 +38,43 @@ def receive_message(client_socket):
 
 while True:
 	read_sockets, _, exception_sockets = select.select(sockets_list, [], sockets_list)
-	for notified_socket in read_sockets:
+	for current_socket in read_sockets:
 
-		if notified_socket == server_socket:
+		if current_socket == server_socket:
 
 			# Accept new connection
 			client_socket, client_address = server_socket.accept()
-			user = receive_message(client_socket)
+			waiter = newMessage(client_socket)
 
 			if user is False:
 				continue
 
 			# Add accepted socket to select.select() list
 			sockets_list.append(client_socket)
-			clients[client_socket] = user
-			print('Accepted new connection from {}:{}, username: {}'.format(*client_address, user['data'].decode('utf-8')))
+			clients[client_socket] = waiter
+			print('Accepted new connection from {}:{}, username: {}'.format(*client_address, waiter['data'].decode('utf-8')))
 
 		# Else existing socket is sending message
 		else:
-			message = receive_message(notified_socket)
+			message = newMessage(current_socket)
 
 			#client disconnected
 			if message is False:
-				print('Closed connection from: {}'.format(clients[notified_socket]['data'].decode('utf-8')))
-				sockets_list.remove(notified_socket)
-				del clients[notified_socket]
+				print('Closed connection from: {}'.format(clients[current_socket]['data'].decode('utf-8')))
+				sockets_list.remove(current_socket)
+				del clients[current_socket]
 
 				continue
 
-			user = clients[notified_socket]
-			print(f'Received message from {user["data"].decode("utf-8")}: {message["data"].decode("utf-8")}')
+			waiter = clients[current_socket]
+			print(f'Received message from {waiter["data"].decode("utf-8")}: {message["data"].decode("utf-8")}')
 
 			for client_socket in clients:
 				#not sender
-				if client_socket != notified_socket:
-					client_socket.send(user['header'] + user['data'] + message['header'] + message['data'])
+				if client_socket != current_socket:
+					client_socket.send(waiter['header'] + waiter['data'] + message['header'] + message['data'])
 
 	#handle socket exceptions
-	for notified_socket in exception_sockets:
-		sockets_list.remove(notified_socket)
-		del clients[notified_socket]
+	for current_socket in exception_sockets:
+		sockets_list.remove(current_socket)
+		del clients[current_socket]

@@ -1,10 +1,11 @@
 import socket
 import select
 import errno
+import sys
 
 HEADER_LENGTH = 10
 
-IP = "192.168.56.101"
+IP = "192.168.230.5"
 PORT = 8888
 
 my_username = "Kitchen"
@@ -29,11 +30,11 @@ while True:
 			if not len(username_header):
 				print('Connection closed by the server')
 				sys.exit()
-			username_length = int(username_header.decode('utf-8').strip())
+			username_length = int(username_header.decode('utf-8'))
 			username = client_socket.recv(username_length).decode('utf-8')
 
 			message_header = client_socket.recv(HEADER_LENGTH)
-			message_length = int(message_header.decode('utf-8').strip())
+			message_length = int(message_header.decode('utf-8'))
 			message = client_socket.recv(message_length).decode('utf-8')
 
 			print(f'{username} > {message}')
