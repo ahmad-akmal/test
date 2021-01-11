@@ -4,7 +4,7 @@ import sys
 
 HEADER_LENGTH = 10
 
-IP = '192.168.208.7'
+IP = '192.168.230.5'
 PORT = 8888
 
 #Create socket
@@ -46,7 +46,7 @@ while True:
 			client_socket, client_address = server_socket.accept()
 			waiter = newMessage(client_socket)
 
-			if user is False:
+			if waiter is False:
 				continue
 
 			# Add accepted socket to select.select() list
