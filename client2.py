@@ -8,7 +8,7 @@ from colorama import Fore
 
 HEADER_LENGTH = 10
 
-IP = "192.168.230.5"
+IP = "192.168.56.101"
 PORT = 8888
 
 def signal_handler(sig,frame):
@@ -38,6 +38,7 @@ while True:
 	#user exit program
 	if my_username.lower() == 'exit':
 		print(Fore.WHITE)
+		client_socket.close()
 		sys.exit()
 
 	record.write(f'{my_username};')

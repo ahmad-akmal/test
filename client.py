@@ -5,7 +5,7 @@ import sys
 
 HEADER_LENGTH = 10
 
-IP = "192.168.230.5"
+IP = "192.168.56.101"
 PORT = 8888
 
 my_username = "Kitchen"
@@ -29,6 +29,7 @@ while True:
 			username_header = client_socket.recv(HEADER_LENGTH)
 			if not len(username_header):
 				print('Connection closed by the server')
+				client_socket.close()
 				sys.exit()
 			username_length = int(username_header.decode('utf-8'))
 			username = client_socket.recv(username_length).decode('utf-8')
@@ -43,9 +44,11 @@ while True:
 
 		if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
 			print('Reading error: {}'.format(str(e)))
+			client_socket.close()
 			sys.exit()
 
 	except Exception as e:
 
 		print('Reading error: '.format(str(e)))
+		client_socket.close()
 		sys.exit()
