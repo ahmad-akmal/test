@@ -27,7 +27,7 @@ def menuChoice(set):
 
 while True:
 	#file open
-	history = open('history.txt','a')
+	record = open('record.txt','a')
 
 	#no ctrl-c allowed here
 	signal.signal(signal.SIGINT, signal_handler)
@@ -40,7 +40,7 @@ while True:
 		print(Fore.WHITE)
 		sys.exit()
 
-	history.write(f'{my_username};')
+	record.write(f'{my_username};')
 	#create socket
 	client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -58,7 +58,7 @@ while True:
 
 		# If message is not empty - send it
 		if message.lower() == 'set a' or message.lower()=='set b' or message.lower()=='set c':
-			history.write(f'{message};')
+			record.write(f'{message};')
 			total_price += menuChoice(message)
 
 			message = message.encode('utf-8')
@@ -67,8 +67,8 @@ while True:
 			client_socket.send(message_header + message)
 		elif message.lower() =='total':
 			print(Fore.YELLOW + f'TOTAL PRICE : RM {total_price}')
-			history.write(f'RM {total_price}\n')
-			history.close()
+			record.write(f'RM {total_price}\n')
+			record.close()
 			break
 		else:
 			print(Fore.RED + 'INVALID')
