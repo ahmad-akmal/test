@@ -8,11 +8,11 @@ from colorama import Fore
 
 HEADER_LENGTH = 10
 
-IP = "192.168.56.101"
+IP = "192.168.230.5"
 PORT = 8888
 
 def signal_handler(sig,frame):
-	print("Please exit properly by typing 'exit' while in Username:")
+	print("Please exit properly by typing 'exit' while in Table No:")
 
 def menuChoice(set):
 	if set.lower() == 'set a':
@@ -33,15 +33,15 @@ while True:
 	signal.signal(signal.SIGINT, signal_handler)
 
 	print(Fore.YELLOW)
-	my_username = input("Username: ")
+	table_ID = input("Table No: ")
 
 	#user exit program
-	if my_username.lower() == 'exit':
+	if table_ID.lower() == 'exit':
 		print(Fore.WHITE)
 		client_socket.close()
 		sys.exit()
 
-	record.write(f'{my_username};')
+	record.write(f'{table_ID};')
 	#create socket
 	client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -50,12 +50,12 @@ while True:
 	#set to non-blocking
 	client_socket.setblocking(False)
 
-	username = my_username.encode('utf-8')
-	username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
-	client_socket.send(username_header + username)
+	table = table_ID.encode('utf-8')
+	table_header = f"{len(table):<{HEADER_LENGTH}}".encode('utf-8')
+	client_socket.send(table_header + table)
 	total_price = 0
 	while True:
-		message = input(Fore.YELLOW + f'{my_username} > ')
+		message = input(Fore.YELLOW + f'{table_ID} > ')
 
 		# If message is not empty - send it
 		if message.lower() == 'set a' or message.lower()=='set b' or message.lower()=='set c':
